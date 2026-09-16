@@ -1,0 +1,117 @@
+tender_number,archetype,legal_name,document_type,file_path,flaw_injected,expected_overall_status
+GEM/2026/B/SAFETY-001,Clean,Suryodaya Safety Systems Pvt Ltd,PAN,synthetic_documents/SAFETY-001_Clean_Suryodaya_Safety_Systems_Pvt_Ltd/PAN.pdf,NO,PASS
+GEM/2026/B/SAFETY-001,Clean,Suryodaya Safety Systems Pvt Ltd,GST_CERTIFICATE,synthetic_documents/SAFETY-001_Clean_Suryodaya_Safety_Systems_Pvt_Ltd/GST_CERTIFICATE.pdf,NO,PASS
+GEM/2026/B/SAFETY-001,Clean,Suryodaya Safety Systems Pvt Ltd,UDYAM_CERTIFICATE,synthetic_documents/SAFETY-001_Clean_Suryodaya_Safety_Systems_Pvt_Ltd/UDYAM_CERTIFICATE.pdf,NO,PASS
+GEM/2026/B/SAFETY-001,Clean,Suryodaya Safety Systems Pvt Ltd,BIS_LICENSE,synthetic_documents/SAFETY-001_Clean_Suryodaya_Safety_Systems_Pvt_Ltd/BIS_LICENSE.pdf,NO,PASS
+GEM/2026/B/SAFETY-001,Clean,Suryodaya Safety Systems Pvt Ltd,OEM_AUTH_LETTER,synthetic_documents/SAFETY-001_Clean_Suryodaya_Safety_Systems_Pvt_Ltd/OEM_AUTH_LETTER.pdf,NO,PASS
+GEM/2026/B/SAFETY-001,Clean,Suryodaya Safety Systems Pvt Ltd,MII_DECLARATION,synthetic_documents/SAFETY-001_Clean_Suryodaya_Safety_Systems_Pvt_Ltd/MII_DECLARATION.pdf,NO,PASS
+GEM/2026/B/SAFETY-001,Clean,Suryodaya Safety Systems Pvt Ltd,EMD_INSTRUMENT,synthetic_documents/SAFETY-001_Clean_Suryodaya_Safety_Systems_Pvt_Ltd/EMD_INSTRUMENT.pdf,NO,PASS
+GEM/2026/B/SAFETY-001,Clean,Suryodaya Safety Systems Pvt Ltd,EXPERIENCE_CERT,synthetic_documents/SAFETY-001_Clean_Suryodaya_Safety_Systems_Pvt_Ltd/EXPERIENCE_CERT.pdf,NO,PASS
+GEM/2026/B/SAFETY-001,Clean,Suryodaya Safety Systems Pvt Ltd,FINANCIAL_STATEMENT,synthetic_documents/SAFETY-001_Clean_Suryodaya_Safety_Systems_Pvt_Ltd/FINANCIAL_STATEMENT.pdf,NO,PASS
+GEM/2026/B/SAFETY-001,Missing-doc,Vendhar Fire Solutions,PAN,synthetic_documents/SAFETY-001_Missing-doc_Vendhar_Fire_Solutions/PAN.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Missing-doc,Vendhar Fire Solutions,GST_CERTIFICATE,synthetic_documents/SAFETY-001_Missing-doc_Vendhar_Fire_Solutions/GST_CERTIFICATE.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Missing-doc,Vendhar Fire Solutions,BIS_LICENSE,synthetic_documents/SAFETY-001_Missing-doc_Vendhar_Fire_Solutions/BIS_LICENSE.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Missing-doc,Vendhar Fire Solutions,MII_DECLARATION,synthetic_documents/SAFETY-001_Missing-doc_Vendhar_Fire_Solutions/MII_DECLARATION.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Missing-doc,Vendhar Fire Solutions,EMD_INSTRUMENT,synthetic_documents/SAFETY-001_Missing-doc_Vendhar_Fire_Solutions/EMD_INSTRUMENT.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Missing-doc,Vendhar Fire Solutions,EXPERIENCE_CERT,synthetic_documents/SAFETY-001_Missing-doc_Vendhar_Fire_Solutions/EXPERIENCE_CERT.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Missing-doc,Vendhar Fire Solutions,FINANCIAL_STATEMENT,synthetic_documents/SAFETY-001_Missing-doc_Vendhar_Fire_Solutions/FINANCIAL_STATEMENT.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Missing-doc,Vendhar Fire Solutions,OEM_AUTH_LETTER,(NOT GENERATED - intentionally missing),MISSING,FAIL
+GEM/2026/B/SAFETY-001,Mismatch,Kaveri PPE Traders,PAN,synthetic_documents/SAFETY-001_Mismatch_Kaveri_PPE_Traders/PAN.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Mismatch,Kaveri PPE Traders,GST_CERTIFICATE,synthetic_documents/SAFETY-001_Mismatch_Kaveri_PPE_Traders/GST_CERTIFICATE.pdf,YES,FAIL
+GEM/2026/B/SAFETY-001,Mismatch,Kaveri PPE Traders,BIS_LICENSE,synthetic_documents/SAFETY-001_Mismatch_Kaveri_PPE_Traders/BIS_LICENSE.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Mismatch,Kaveri PPE Traders,OEM_AUTH_LETTER,synthetic_documents/SAFETY-001_Mismatch_Kaveri_PPE_Traders/OEM_AUTH_LETTER.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Mismatch,Kaveri PPE Traders,MII_DECLARATION,synthetic_documents/SAFETY-001_Mismatch_Kaveri_PPE_Traders/MII_DECLARATION.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Mismatch,Kaveri PPE Traders,EMD_INSTRUMENT,synthetic_documents/SAFETY-001_Mismatch_Kaveri_PPE_Traders/EMD_INSTRUMENT.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Mismatch,Kaveri PPE Traders,EXPERIENCE_CERT,synthetic_documents/SAFETY-001_Mismatch_Kaveri_PPE_Traders/EXPERIENCE_CERT.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Mismatch,Kaveri PPE Traders,FINANCIAL_STATEMENT,synthetic_documents/SAFETY-001_Mismatch_Kaveri_PPE_Traders/FINANCIAL_STATEMENT.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Expired-cert,Anbu Safety Equipments,PAN,synthetic_documents/SAFETY-001_Expired-cert_Anbu_Safety_Equipments/PAN.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Expired-cert,Anbu Safety Equipments,GST_CERTIFICATE,synthetic_documents/SAFETY-001_Expired-cert_Anbu_Safety_Equipments/GST_CERTIFICATE.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Expired-cert,Anbu Safety Equipments,BIS_LICENSE,synthetic_documents/SAFETY-001_Expired-cert_Anbu_Safety_Equipments/BIS_LICENSE.pdf,YES,FAIL
+GEM/2026/B/SAFETY-001,Expired-cert,Anbu Safety Equipments,OEM_AUTH_LETTER,synthetic_documents/SAFETY-001_Expired-cert_Anbu_Safety_Equipments/OEM_AUTH_LETTER.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Expired-cert,Anbu Safety Equipments,MII_DECLARATION,synthetic_documents/SAFETY-001_Expired-cert_Anbu_Safety_Equipments/MII_DECLARATION.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Expired-cert,Anbu Safety Equipments,EMD_INSTRUMENT,synthetic_documents/SAFETY-001_Expired-cert_Anbu_Safety_Equipments/EMD_INSTRUMENT.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Expired-cert,Anbu Safety Equipments,EXPERIENCE_CERT,synthetic_documents/SAFETY-001_Expired-cert_Anbu_Safety_Equipments/EXPERIENCE_CERT.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Expired-cert,Anbu Safety Equipments,FINANCIAL_STATEMENT,synthetic_documents/SAFETY-001_Expired-cert_Anbu_Safety_Equipments/FINANCIAL_STATEMENT.pdf,NO,FAIL
+GEM/2026/B/SAFETY-001,Borderline,Thiruvalluvar Industrial Supplies,PAN,synthetic_documents/SAFETY-001_Borderline_Thiruvalluvar_Industrial_Supplies/PAN.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/SAFETY-001,Borderline,Thiruvalluvar Industrial Supplies,GST_CERTIFICATE,synthetic_documents/SAFETY-001_Borderline_Thiruvalluvar_Industrial_Supplies/GST_CERTIFICATE.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/SAFETY-001,Borderline,Thiruvalluvar Industrial Supplies,BIS_LICENSE,synthetic_documents/SAFETY-001_Borderline_Thiruvalluvar_Industrial_Supplies/BIS_LICENSE.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/SAFETY-001,Borderline,Thiruvalluvar Industrial Supplies,OEM_AUTH_LETTER,synthetic_documents/SAFETY-001_Borderline_Thiruvalluvar_Industrial_Supplies/OEM_AUTH_LETTER.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/SAFETY-001,Borderline,Thiruvalluvar Industrial Supplies,MII_DECLARATION,synthetic_documents/SAFETY-001_Borderline_Thiruvalluvar_Industrial_Supplies/MII_DECLARATION.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/SAFETY-001,Borderline,Thiruvalluvar Industrial Supplies,EMD_INSTRUMENT,synthetic_documents/SAFETY-001_Borderline_Thiruvalluvar_Industrial_Supplies/EMD_INSTRUMENT.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/SAFETY-001,Borderline,Thiruvalluvar Industrial Supplies,EXPERIENCE_CERT,synthetic_documents/SAFETY-001_Borderline_Thiruvalluvar_Industrial_Supplies/EXPERIENCE_CERT.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/SAFETY-001,Borderline,Thiruvalluvar Industrial Supplies,FINANCIAL_STATEMENT,synthetic_documents/SAFETY-001_Borderline_Thiruvalluvar_Industrial_Supplies/FINANCIAL_STATEMENT.pdf,YES,REQUIRES_MANUAL_REVIEW
+GEM/2026/S/AMC-002,Clean,Nandhi Engineering Services,PAN,synthetic_documents/AMC-002_Clean_Nandhi_Engineering_Services/PAN.pdf,NO,PASS
+GEM/2026/S/AMC-002,Clean,Nandhi Engineering Services,GST_CERTIFICATE,synthetic_documents/AMC-002_Clean_Nandhi_Engineering_Services/GST_CERTIFICATE.pdf,NO,PASS
+GEM/2026/S/AMC-002,Clean,Nandhi Engineering Services,EPFO_ESI_CERT,synthetic_documents/AMC-002_Clean_Nandhi_Engineering_Services/EPFO_ESI_CERT.pdf,NO,PASS
+GEM/2026/S/AMC-002,Clean,Nandhi Engineering Services,MANPOWER_LIST,synthetic_documents/AMC-002_Clean_Nandhi_Engineering_Services/MANPOWER_LIST.pdf,NO,PASS
+GEM/2026/S/AMC-002,Clean,Nandhi Engineering Services,EMD_INSTRUMENT,synthetic_documents/AMC-002_Clean_Nandhi_Engineering_Services/EMD_INSTRUMENT.pdf,NO,PASS
+GEM/2026/S/AMC-002,Clean,Nandhi Engineering Services,EXPERIENCE_CERT,synthetic_documents/AMC-002_Clean_Nandhi_Engineering_Services/EXPERIENCE_CERT.pdf,NO,PASS
+GEM/2026/S/AMC-002,Clean,Nandhi Engineering Services,FINANCIAL_STATEMENT,synthetic_documents/AMC-002_Clean_Nandhi_Engineering_Services/FINANCIAL_STATEMENT.pdf,NO,PASS
+GEM/2026/S/AMC-002,Clean,Nandhi Engineering Services,SLA_ACCEPTANCE,synthetic_documents/AMC-002_Clean_Nandhi_Engineering_Services/SLA_ACCEPTANCE.pdf,NO,PASS
+GEM/2026/S/AMC-002,Missing-doc,SPK Facility Management,PAN,synthetic_documents/AMC-002_Missing-doc_SPK_Facility_Management/PAN.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Missing-doc,SPK Facility Management,GST_CERTIFICATE,synthetic_documents/AMC-002_Missing-doc_SPK_Facility_Management/GST_CERTIFICATE.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Missing-doc,SPK Facility Management,MANPOWER_LIST,synthetic_documents/AMC-002_Missing-doc_SPK_Facility_Management/MANPOWER_LIST.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Missing-doc,SPK Facility Management,EMD_INSTRUMENT,synthetic_documents/AMC-002_Missing-doc_SPK_Facility_Management/EMD_INSTRUMENT.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Missing-doc,SPK Facility Management,EXPERIENCE_CERT,synthetic_documents/AMC-002_Missing-doc_SPK_Facility_Management/EXPERIENCE_CERT.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Missing-doc,SPK Facility Management,FINANCIAL_STATEMENT,synthetic_documents/AMC-002_Missing-doc_SPK_Facility_Management/FINANCIAL_STATEMENT.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Missing-doc,SPK Facility Management,SLA_ACCEPTANCE,synthetic_documents/AMC-002_Missing-doc_SPK_Facility_Management/SLA_ACCEPTANCE.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Missing-doc,SPK Facility Management,EPFO_ESI_CERT,(NOT GENERATED - intentionally missing),MISSING,FAIL
+GEM/2026/S/AMC-002,Mismatch,Muruga Technical Services,PAN,synthetic_documents/AMC-002_Mismatch_Muruga_Technical_Services/PAN.pdf,YES,FAIL
+GEM/2026/S/AMC-002,Mismatch,Muruga Technical Services,GST_CERTIFICATE,synthetic_documents/AMC-002_Mismatch_Muruga_Technical_Services/GST_CERTIFICATE.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Mismatch,Muruga Technical Services,EPFO_ESI_CERT,synthetic_documents/AMC-002_Mismatch_Muruga_Technical_Services/EPFO_ESI_CERT.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Mismatch,Muruga Technical Services,MANPOWER_LIST,synthetic_documents/AMC-002_Mismatch_Muruga_Technical_Services/MANPOWER_LIST.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Mismatch,Muruga Technical Services,EMD_INSTRUMENT,synthetic_documents/AMC-002_Mismatch_Muruga_Technical_Services/EMD_INSTRUMENT.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Mismatch,Muruga Technical Services,EXPERIENCE_CERT,synthetic_documents/AMC-002_Mismatch_Muruga_Technical_Services/EXPERIENCE_CERT.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Mismatch,Muruga Technical Services,FINANCIAL_STATEMENT,synthetic_documents/AMC-002_Mismatch_Muruga_Technical_Services/FINANCIAL_STATEMENT.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Mismatch,Muruga Technical Services,SLA_ACCEPTANCE,synthetic_documents/AMC-002_Mismatch_Muruga_Technical_Services/SLA_ACCEPTANCE.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Expired-cert,Coromandel Plant Services,PAN,synthetic_documents/AMC-002_Expired-cert_Coromandel_Plant_Services/PAN.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Expired-cert,Coromandel Plant Services,GST_CERTIFICATE,synthetic_documents/AMC-002_Expired-cert_Coromandel_Plant_Services/GST_CERTIFICATE.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Expired-cert,Coromandel Plant Services,EPFO_ESI_CERT,synthetic_documents/AMC-002_Expired-cert_Coromandel_Plant_Services/EPFO_ESI_CERT.pdf,YES,FAIL
+GEM/2026/S/AMC-002,Expired-cert,Coromandel Plant Services,MANPOWER_LIST,synthetic_documents/AMC-002_Expired-cert_Coromandel_Plant_Services/MANPOWER_LIST.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Expired-cert,Coromandel Plant Services,EMD_INSTRUMENT,synthetic_documents/AMC-002_Expired-cert_Coromandel_Plant_Services/EMD_INSTRUMENT.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Expired-cert,Coromandel Plant Services,EXPERIENCE_CERT,synthetic_documents/AMC-002_Expired-cert_Coromandel_Plant_Services/EXPERIENCE_CERT.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Expired-cert,Coromandel Plant Services,FINANCIAL_STATEMENT,synthetic_documents/AMC-002_Expired-cert_Coromandel_Plant_Services/FINANCIAL_STATEMENT.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Expired-cert,Coromandel Plant Services,SLA_ACCEPTANCE,synthetic_documents/AMC-002_Expired-cert_Coromandel_Plant_Services/SLA_ACCEPTANCE.pdf,NO,FAIL
+GEM/2026/S/AMC-002,Borderline,Vetri Maintenance Co,PAN,synthetic_documents/AMC-002_Borderline_Vetri_Maintenance_Co/PAN.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/S/AMC-002,Borderline,Vetri Maintenance Co,GST_CERTIFICATE,synthetic_documents/AMC-002_Borderline_Vetri_Maintenance_Co/GST_CERTIFICATE.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/S/AMC-002,Borderline,Vetri Maintenance Co,EPFO_ESI_CERT,synthetic_documents/AMC-002_Borderline_Vetri_Maintenance_Co/EPFO_ESI_CERT.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/S/AMC-002,Borderline,Vetri Maintenance Co,MANPOWER_LIST,synthetic_documents/AMC-002_Borderline_Vetri_Maintenance_Co/MANPOWER_LIST.pdf,YES,REQUIRES_MANUAL_REVIEW
+GEM/2026/S/AMC-002,Borderline,Vetri Maintenance Co,EMD_INSTRUMENT,synthetic_documents/AMC-002_Borderline_Vetri_Maintenance_Co/EMD_INSTRUMENT.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/S/AMC-002,Borderline,Vetri Maintenance Co,EXPERIENCE_CERT,synthetic_documents/AMC-002_Borderline_Vetri_Maintenance_Co/EXPERIENCE_CERT.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/S/AMC-002,Borderline,Vetri Maintenance Co,FINANCIAL_STATEMENT,synthetic_documents/AMC-002_Borderline_Vetri_Maintenance_Co/FINANCIAL_STATEMENT.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/S/AMC-002,Borderline,Vetri Maintenance Co,SLA_ACCEPTANCE,synthetic_documents/AMC-002_Borderline_Vetri_Maintenance_Co/SLA_ACCEPTANCE.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/MSME-003,Clean,Amman Furniture Works,PAN,synthetic_documents/MSME-003_Clean_Amman_Furniture_Works/PAN.pdf,NO,PASS
+GEM/2026/B/MSME-003,Clean,Amman Furniture Works,GST_CERTIFICATE,synthetic_documents/MSME-003_Clean_Amman_Furniture_Works/GST_CERTIFICATE.pdf,NO,PASS
+GEM/2026/B/MSME-003,Clean,Amman Furniture Works,UDYAM_CERTIFICATE,synthetic_documents/MSME-003_Clean_Amman_Furniture_Works/UDYAM_CERTIFICATE.pdf,NO,PASS
+GEM/2026/B/MSME-003,Clean,Amman Furniture Works,QUALITY_CERT,synthetic_documents/MSME-003_Clean_Amman_Furniture_Works/QUALITY_CERT.pdf,NO,PASS
+GEM/2026/B/MSME-003,Clean,Amman Furniture Works,MII_DECLARATION,synthetic_documents/MSME-003_Clean_Amman_Furniture_Works/MII_DECLARATION.pdf,NO,PASS
+GEM/2026/B/MSME-003,Clean,Amman Furniture Works,EXPERIENCE_CERT,synthetic_documents/MSME-003_Clean_Amman_Furniture_Works/EXPERIENCE_CERT.pdf,NO,PASS
+GEM/2026/B/MSME-003,Clean,Amman Furniture Works,FINANCIAL_STATEMENT,synthetic_documents/MSME-003_Clean_Amman_Furniture_Works/FINANCIAL_STATEMENT.pdf,NO,PASS
+GEM/2026/B/MSME-003,Missing-doc,Sri Balaji Stationery Mart,PAN,synthetic_documents/MSME-003_Missing-doc_Sri_Balaji_Stationery_Mart/PAN.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Missing-doc,Sri Balaji Stationery Mart,GST_CERTIFICATE,synthetic_documents/MSME-003_Missing-doc_Sri_Balaji_Stationery_Mart/GST_CERTIFICATE.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Missing-doc,Sri Balaji Stationery Mart,QUALITY_CERT,synthetic_documents/MSME-003_Missing-doc_Sri_Balaji_Stationery_Mart/QUALITY_CERT.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Missing-doc,Sri Balaji Stationery Mart,MII_DECLARATION,synthetic_documents/MSME-003_Missing-doc_Sri_Balaji_Stationery_Mart/MII_DECLARATION.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Missing-doc,Sri Balaji Stationery Mart,EXPERIENCE_CERT,synthetic_documents/MSME-003_Missing-doc_Sri_Balaji_Stationery_Mart/EXPERIENCE_CERT.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Missing-doc,Sri Balaji Stationery Mart,FINANCIAL_STATEMENT,synthetic_documents/MSME-003_Missing-doc_Sri_Balaji_Stationery_Mart/FINANCIAL_STATEMENT.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Missing-doc,Sri Balaji Stationery Mart,UDYAM_CERTIFICATE,(NOT GENERATED - intentionally missing),MISSING,FAIL
+GEM/2026/B/MSME-003,Mismatch,Lakshmi Office Interiors,PAN,synthetic_documents/MSME-003_Mismatch_Lakshmi_Office_Interiors/PAN.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Mismatch,Lakshmi Office Interiors,GST_CERTIFICATE,synthetic_documents/MSME-003_Mismatch_Lakshmi_Office_Interiors/GST_CERTIFICATE.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Mismatch,Lakshmi Office Interiors,UDYAM_CERTIFICATE,synthetic_documents/MSME-003_Mismatch_Lakshmi_Office_Interiors/UDYAM_CERTIFICATE.pdf,YES,FAIL
+GEM/2026/B/MSME-003,Mismatch,Lakshmi Office Interiors,QUALITY_CERT,synthetic_documents/MSME-003_Mismatch_Lakshmi_Office_Interiors/QUALITY_CERT.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Mismatch,Lakshmi Office Interiors,MII_DECLARATION,synthetic_documents/MSME-003_Mismatch_Lakshmi_Office_Interiors/MII_DECLARATION.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Mismatch,Lakshmi Office Interiors,EXPERIENCE_CERT,synthetic_documents/MSME-003_Mismatch_Lakshmi_Office_Interiors/EXPERIENCE_CERT.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Mismatch,Lakshmi Office Interiors,FINANCIAL_STATEMENT,synthetic_documents/MSME-003_Mismatch_Lakshmi_Office_Interiors/FINANCIAL_STATEMENT.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Expired-cert,Devi Furniture Fabricators,PAN,synthetic_documents/MSME-003_Expired-cert_Devi_Furniture_Fabricators/PAN.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Expired-cert,Devi Furniture Fabricators,GST_CERTIFICATE,synthetic_documents/MSME-003_Expired-cert_Devi_Furniture_Fabricators/GST_CERTIFICATE.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Expired-cert,Devi Furniture Fabricators,UDYAM_CERTIFICATE,synthetic_documents/MSME-003_Expired-cert_Devi_Furniture_Fabricators/UDYAM_CERTIFICATE.pdf,YES,FAIL
+GEM/2026/B/MSME-003,Expired-cert,Devi Furniture Fabricators,QUALITY_CERT,synthetic_documents/MSME-003_Expired-cert_Devi_Furniture_Fabricators/QUALITY_CERT.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Expired-cert,Devi Furniture Fabricators,MII_DECLARATION,synthetic_documents/MSME-003_Expired-cert_Devi_Furniture_Fabricators/MII_DECLARATION.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Expired-cert,Devi Furniture Fabricators,EXPERIENCE_CERT,synthetic_documents/MSME-003_Expired-cert_Devi_Furniture_Fabricators/EXPERIENCE_CERT.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Expired-cert,Devi Furniture Fabricators,FINANCIAL_STATEMENT,synthetic_documents/MSME-003_Expired-cert_Devi_Furniture_Fabricators/FINANCIAL_STATEMENT.pdf,NO,FAIL
+GEM/2026/B/MSME-003,Borderline,Ganesh Traders & Suppliers,PAN,synthetic_documents/MSME-003_Borderline_Ganesh_Traders_Suppliers/PAN.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/MSME-003,Borderline,Ganesh Traders & Suppliers,GST_CERTIFICATE,synthetic_documents/MSME-003_Borderline_Ganesh_Traders_Suppliers/GST_CERTIFICATE.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/MSME-003,Borderline,Ganesh Traders & Suppliers,UDYAM_CERTIFICATE,synthetic_documents/MSME-003_Borderline_Ganesh_Traders_Suppliers/UDYAM_CERTIFICATE.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/MSME-003,Borderline,Ganesh Traders & Suppliers,QUALITY_CERT,synthetic_documents/MSME-003_Borderline_Ganesh_Traders_Suppliers/QUALITY_CERT.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/MSME-003,Borderline,Ganesh Traders & Suppliers,MII_DECLARATION,synthetic_documents/MSME-003_Borderline_Ganesh_Traders_Suppliers/MII_DECLARATION.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/MSME-003,Borderline,Ganesh Traders & Suppliers,EXPERIENCE_CERT,synthetic_documents/MSME-003_Borderline_Ganesh_Traders_Suppliers/EXPERIENCE_CERT.pdf,NO,REQUIRES_MANUAL_REVIEW
+GEM/2026/B/MSME-003,Borderline,Ganesh Traders & Suppliers,FINANCIAL_STATEMENT,synthetic_documents/MSME-003_Borderline_Ganesh_Traders_Suppliers/FINANCIAL_STATEMENT.pdf,YES,REQUIRES_MANUAL_REVIEW

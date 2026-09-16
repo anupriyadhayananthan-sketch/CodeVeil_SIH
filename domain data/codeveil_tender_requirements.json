@@ -1,0 +1,296 @@
+[
+  {
+    "tender_number": "GEM/2026/B/SAFETY-001",
+    "title": "Supply of Industrial Personal Protective Equipment (PPE) and Safety Gear",
+    "issuing_authority": "Chennai Petroleum Corporation Limited (CPCL)",
+    "category": "Safety Equipment",
+    "requirements": [
+      {
+        "code": "REQ-PAN-01",
+        "title": "PAN Card Verification",
+        "description": "Bidder must submit a valid Permanent Account Number (PAN) issued by the Income Tax Department, matching the legal entity name on the bid.",
+        "mandatory": true,
+        "source_clause": "Clause 3.1(a)",
+        "source_page": 2,
+        "threshold_value": null
+      },
+      {
+        "code": "REQ-GST-01",
+        "title": "GST Registration & Active Filing Status",
+        "description": "Bidder must hold a valid GSTIN with 'Active' filing status for at least the preceding 6 months, verified against GSTN records.",
+        "mandatory": true,
+        "source_clause": "Clause 3.1(b)",
+        "source_page": 2,
+        "threshold_value": "Active >=6 months"
+      },
+      {
+        "code": "REQ-MSME-UDYAM-01",
+        "title": "MSME/Udyam Registration (Optional Preference)",
+        "description": "Bidders registered as Micro or Small Enterprises under Udyam may claim purchase preference under the Public Procurement Policy for MSEs 2012. Not mandatory for eligibility.",
+        "mandatory": false,
+        "source_clause": "Clause 3.2",
+        "source_page": 3,
+        "threshold_value": "Micro/Small category"
+      },
+      {
+        "code": "REQ-BIS-CERT-01",
+        "title": "BIS/ISI Certification for Safety Gear",
+        "description": "All supplied PPE items (helmets, safety shoes, gloves, etc.) must carry valid BIS/ISI certification marks as applicable to the product category.",
+        "mandatory": true,
+        "source_clause": "Clause 5.4",
+        "source_page": 6,
+        "threshold_value": "Valid BIS License"
+      },
+      {
+        "code": "REQ-OEM-AUTH-01",
+        "title": "OEM Authorization Letter",
+        "description": "If the bidder is not the manufacturer, a letter from the Original Equipment Manufacturer authorizing the bidder as a dealer/distributor is required.",
+        "mandatory": true,
+        "source_clause": "Clause 4.3",
+        "source_page": 5,
+        "threshold_value": null
+      },
+      {
+        "code": "REQ-MII-01",
+        "title": "Make in India / Local Content Certificate",
+        "description": "Bidder must submit self-certification of local content percentage per the Public Procurement (Preference to Make in India) Order 2017.",
+        "mandatory": true,
+        "source_clause": "Clause 6.1",
+        "source_page": 7,
+        "threshold_value": ">=50% local content for Class-I supplier status"
+      },
+      {
+        "code": "REQ-DEBAR-01",
+        "title": "Non-Blacklisting / Debarment Declaration",
+        "description": "Bidder must not be under any active blacklisting or debarment order from CPCL, MoPNG, or any Central/State Government procuring entity.",
+        "mandatory": true,
+        "source_clause": "Clause 3.5",
+        "source_page": 4,
+        "threshold_value": null
+      },
+      {
+        "code": "REQ-EMD-01",
+        "title": "Earnest Money Deposit (EMD) / Bid Security",
+        "description": "Bidder must furnish EMD as specified, unless exempted under MSE/Udyam or Startup India provisions.",
+        "mandatory": true,
+        "source_clause": "Clause 3.6",
+        "source_page": 4,
+        "threshold_value": "INR 50,000 or valid exemption proof"
+      },
+      {
+        "code": "REQ-EXP-01",
+        "title": "Past Supply Experience Certificate",
+        "description": "Bidder must demonstrate at least one similar completed supply order of comparable value in the preceding 3 years, supported by a client-issued completion certificate.",
+        "mandatory": true,
+        "source_clause": "Clause 4.5",
+        "source_page": 5,
+        "threshold_value": "1 order, last 3 years, >=40% of tender value"
+      },
+      {
+        "code": "REQ-TURNOVER-01",
+        "title": "Minimum Annual Turnover",
+        "description": "Bidder must submit audited financial statements or a CA certificate showing minimum average annual turnover over the last 3 financial years.",
+        "mandatory": true,
+        "source_clause": "Clause 4.6",
+        "source_page": 6,
+        "threshold_value": ">=INR 20 Lakhs average (last 3 FY)"
+      }
+    ]
+  },
+  {
+    "tender_number": "GEM/2026/S/AMC-002",
+    "title": "Comprehensive Annual Maintenance Contract (AMC) for Plant Fire & Safety Systems",
+    "issuing_authority": "Chennai Petroleum Corporation Limited (CPCL)",
+    "category": "Maintenance Service",
+    "requirements": [
+      {
+        "code": "REQ-PAN-01",
+        "title": "PAN Card Verification",
+        "description": "Bidder must submit a valid PAN matching the legal entity name on the bid.",
+        "mandatory": true,
+        "source_clause": "Clause 3.1(a)",
+        "source_page": 2,
+        "threshold_value": null
+      },
+      {
+        "code": "REQ-GST-01",
+        "title": "GST Registration & Active Filing Status",
+        "description": "Bidder must hold a valid GSTIN with 'Active' filing status for at least the preceding 6 months.",
+        "mandatory": true,
+        "source_clause": "Clause 3.1(b)",
+        "source_page": 2,
+        "threshold_value": "Active >=6 months"
+      },
+      {
+        "code": "REQ-MSME-UDYAM-01",
+        "title": "MSME/Udyam Registration (Optional Preference)",
+        "description": "Udyam-registered Micro/Small service providers may claim purchase preference. Not mandatory for eligibility.",
+        "mandatory": false,
+        "source_clause": "Clause 3.2",
+        "source_page": 3,
+        "threshold_value": "Micro/Small category"
+      },
+      {
+        "code": "REQ-EXP-AMC-01",
+        "title": "Past AMC/Service Experience",
+        "description": "Bidder must have satisfactorily executed at least 2 similar AMC/service contracts of comparable scope in the last 3 years, each valued at not less than 40% of the estimated contract value, supported by client completion certificates.",
+        "mandatory": true,
+        "source_clause": "Clause 4.2",
+        "source_page": 5,
+        "threshold_value": "2 contracts, last 3 years, >=40% value each"
+      },
+      {
+        "code": "REQ-MANPOWER-01",
+        "title": "Technical Manpower Deployment Plan",
+        "description": "Bidder must submit a manpower deployment plan listing qualified technicians/engineers to be deployed on-site, with relevant certifications.",
+        "mandatory": true,
+        "source_clause": "Clause 5.1",
+        "source_page": 6,
+        "threshold_value": "Min. 1 certified fire & safety technician on-site"
+      },
+      {
+        "code": "REQ-EPFO-ESIC-01",
+        "title": "EPFO & ESIC Registration",
+        "description": "Bidder must hold valid EPFO and ESIC registration, as the contract involves deployment of contract labour on CPCL premises.",
+        "mandatory": true,
+        "source_clause": "Clause 5.3",
+        "source_page": 6,
+        "threshold_value": null
+      },
+      {
+        "code": "REQ-SLA-01",
+        "title": "Service Level Agreement / Response Time Commitment",
+        "description": "Bidder must accept the SLA clause committing to a maximum breakdown response time and a specified uptime percentage for maintained equipment.",
+        "mandatory": true,
+        "source_clause": "Clause 6.2",
+        "source_page": 7,
+        "threshold_value": "Response <=4 hrs; Uptime >=98%"
+      },
+      {
+        "code": "REQ-DEBAR-01",
+        "title": "Non-Blacklisting / Debarment Declaration",
+        "description": "Bidder must not be under any active blacklisting or debarment order from CPCL, MoPNG, or any Central/State Government procuring entity.",
+        "mandatory": true,
+        "source_clause": "Clause 3.5",
+        "source_page": 4,
+        "threshold_value": null
+      },
+      {
+        "code": "REQ-EMD-01",
+        "title": "Earnest Money Deposit (EMD) / Bid Security",
+        "description": "Bidder must furnish EMD as specified, unless exempted under MSE/Udyam or Startup India provisions.",
+        "mandatory": true,
+        "source_clause": "Clause 3.6",
+        "source_page": 4,
+        "threshold_value": "INR 75,000 or valid exemption proof"
+      },
+      {
+        "code": "REQ-TURNOVER-01",
+        "title": "Minimum Annual Turnover",
+        "description": "Bidder must submit audited financials showing minimum average annual turnover over the last 3 financial years.",
+        "mandatory": true,
+        "source_clause": "Clause 4.6",
+        "source_page": 6,
+        "threshold_value": ">=INR 30 Lakhs average (last 3 FY)"
+      }
+    ]
+  },
+  {
+    "tender_number": "GEM/2026/B/MSME-003",
+    "title": "Procurement of Industrial Spares under MSE Purchase Preference Policy",
+    "issuing_authority": "Chennai Petroleum Corporation Limited (CPCL)",
+    "category": "MSME Purchase",
+    "requirements": [
+      {
+        "code": "REQ-PAN-01",
+        "title": "PAN Card Verification",
+        "description": "Bidder must submit a valid PAN matching the legal entity name on the bid.",
+        "mandatory": true,
+        "source_clause": "Clause 3.1(a)",
+        "source_page": 2,
+        "threshold_value": null
+      },
+      {
+        "code": "REQ-GST-01",
+        "title": "GST Registration & Active Filing Status",
+        "description": "Bidder must hold a valid GSTIN with 'Active' filing status for at least the preceding 6 months.",
+        "mandatory": true,
+        "source_clause": "Clause 3.1(b)",
+        "source_page": 2,
+        "threshold_value": "Active >=6 months"
+      },
+      {
+        "code": "REQ-UDYAM-01",
+        "title": "Udyam Registration (Mandatory)",
+        "description": "This tender is preferenced under the Public Procurement Policy for Micro & Small Enterprises 2012. Bidder must hold a valid Udyam Registration Certificate classifying it as Micro or Small.",
+        "mandatory": true,
+        "source_clause": "Clause 2.1",
+        "source_page": 2,
+        "threshold_value": "Micro or Small category only"
+      },
+      {
+        "code": "REQ-MSE-CATEGORY-01",
+        "title": "MSE Sub-Category Proof (SC/ST/Women-owned)",
+        "description": "Bidders may optionally submit proof of SC/ST-owned or women-owned enterprise status to claim sub-target reservation under the MSE Policy.",
+        "mandatory": false,
+        "source_clause": "Clause 2.3",
+        "source_page": 3,
+        "threshold_value": null
+      },
+      {
+        "code": "REQ-EMD-EXEMPT-01",
+        "title": "EMD Exemption for Udyam-Registered Bidders",
+        "description": "Udyam-registered Micro/Small bidders are exempt from furnishing EMD; non-MSE bidders must submit standard EMD.",
+        "mandatory": false,
+        "source_clause": "Clause 3.4",
+        "source_page": 4,
+        "threshold_value": "Exempt if Udyam-registered"
+      },
+      {
+        "code": "REQ-L1-PREFERENCE-01",
+        "title": "Purchase Preference at L1 Price Declaration",
+        "description": "Eligible MSE bidders quoting within 15% of the L1 price may be given an opportunity to match L1 and receive a share of the order, per the Purchase Preference Policy.",
+        "mandatory": false,
+        "source_clause": "Clause 7.1",
+        "source_page": 8,
+        "threshold_value": "Within 15% of L1"
+      },
+      {
+        "code": "REQ-DEBAR-01",
+        "title": "Non-Blacklisting / Debarment Declaration",
+        "description": "Bidder must not be under any active blacklisting or debarment order from CPCL, MoPNG, or any Central/State Government procuring entity.",
+        "mandatory": true,
+        "source_clause": "Clause 3.5",
+        "source_page": 4,
+        "threshold_value": null
+      },
+      {
+        "code": "REQ-EXP-RELAXED-01",
+        "title": "Past Supply Experience (Relaxed for MSE)",
+        "description": "Experience criteria are relaxed for Udyam-registered MSE bidders per government policy; non-MSE bidders must meet the full standard criterion of at least 1 similar completed order in the last 3 years.",
+        "mandatory": true,
+        "source_clause": "Clause 4.4",
+        "source_page": 5,
+        "threshold_value": "Relaxed for MSE; standard: 1 order in last 3 years"
+      },
+      {
+        "code": "REQ-TURNOVER-RELAXED-01",
+        "title": "Minimum Annual Turnover (Relaxed for MSE)",
+        "description": "Turnover criteria may be relaxed up to 100% for Udyam-registered MSE bidders per policy; the standard threshold otherwise applies.",
+        "mandatory": true,
+        "source_clause": "Clause 4.7",
+        "source_page": 6,
+        "threshold_value": ">=INR 10 Lakhs (MSE-relaxed) / INR 20 Lakhs (standard)"
+      },
+      {
+        "code": "REQ-QUALITY-CERT-01",
+        "title": "Quality Certification (ISO/BIS as applicable)",
+        "description": "Where applicable to the item category, bidder may submit ISO 9001 or BIS certification to strengthen quality compliance evidence.",
+        "mandatory": false,
+        "source_clause": "Clause 5.5",
+        "source_page": 7,
+        "threshold_value": null
+      }
+    ]
+  }
+]

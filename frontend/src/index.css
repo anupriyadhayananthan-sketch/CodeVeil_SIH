@@ -1,0 +1,108 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root,
+  [data-theme="light"] {
+    --background: #f8fafc;
+    --surface: #ffffff;
+    --surface-secondary: #f1f5f9;
+    --input-background: #ffffff;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --border: #dbe3ef;
+    --accent: #2563eb;
+    color-scheme: light;
+  }
+
+  html.dark,
+  [data-theme="dark"] {
+    --background: #020617;
+    --surface: #0f172a;
+    --surface-secondary: #111827;
+    --input-background: #020617;
+    --text-primary: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --border: #334155;
+    --accent: #3b82f6;
+    color-scheme: dark;
+  }
+
+  html,
+  body {
+    background-color: var(--background) !important;
+    color: var(--text-primary) !important;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    min-height: 100vh;
+  }
+
+  #root {
+    min-height: 100vh;
+    background-color: var(--background);
+    color: var(--text-primary);
+  }
+}
+
+@layer utilities {
+  .theme-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05);
+  }
+
+  .glass-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+  }
+  .dark .glass-card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  }
+
+  .glass-card-hover {
+    transition: all 0.2s ease-in-out;
+  }
+  .glass-card-hover:hover {
+    border-color: var(--accent);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
+    transform: translateY(-2px);
+  }
+}
+
+/* CPCL Ticker Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 25s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--surface-secondary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
