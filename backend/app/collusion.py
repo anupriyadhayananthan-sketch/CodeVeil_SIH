@@ -1,7 +1,7 @@
 import numpy as np
 import pandas as pd
 import networkx as nx
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 try:
     from sklearn.ensemble import RandomForestClassifier
     from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
