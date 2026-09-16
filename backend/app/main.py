@@ -31,13 +31,18 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Explicit CORS allow-list
-origins = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000"
-]
+# CORS allow-list — reads from CORS_ORIGINS env var (comma-separated) in production,
+# falls back to localhost for local development.
+_cors_env = os.environ.get("CORS_ORIGINS", "")
+if _cors_env.strip():
+    origins = [o.strip() for o in _cors_env.split(",") if o.strip()]
+else:
+    origins = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+        "http://127.0.0.1:5173",
+        "http://127.0.0.1:3000"
+    ]
 
 app.add_middleware(
     CORSMiddleware,
