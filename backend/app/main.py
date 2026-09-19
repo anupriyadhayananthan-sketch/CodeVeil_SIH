@@ -69,9 +69,9 @@ app.add_middleware(
 # ---------------------------------------------------------------------------
 @app.on_event("startup")
 def auto_seed_on_startup():
-    """Idempotent startup hook — seeds demo users/tenders/bidders only when
-    the primary demo user (officer@cpcl.gov.in) does not yet exist.
-    Safe to run on every restart; returns instantly when data is present."""
+    """Idempotent startup hook — runs every startup but each step (users,
+    tenders, bidders, rules engine) is individually skipped if the data
+    already exists, so restarts never create duplicates."""
     from app.seeder import seed_demo_data
     db = SessionLocal()
     try:

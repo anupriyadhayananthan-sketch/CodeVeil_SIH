@@ -1,14 +1,19 @@
-﻿"""
+"""
 app/seeder.py
 -------------
 Idempotent demo-data seeder.
 
-Checks whether the primary demo user (officer@cpcl.gov.in) already exists.
-If it does NOT exist, seeds users, tenders, requirements, bidders, documents,
-compliance verification results, and document-integrity flags.
+Each seeding step is independently idempotent:
+  - Users     : skipped if email already exists
+  - Tenders   : skipped if tender_number already exists
+  - Bidders   : skipped if (tender_id, legal_name) already exists
+  - Documents : skipped if (bidder_id, document_type) already exists
+  - VerificationResults : skipped if any result already exists for a bidder
+  - IntegrityFlags      : upserted (create if missing, update fields if present)
 
-Safe to call on every application startup:  if data is already present the
-function returns immediately without touching the database.
+Safe to call on every application startup — each step independently checks
+what already exists, so restarts never create duplicates or crash on
+unique-constraint violations.
 """
 
 import os
@@ -28,6 +33,10 @@ def seed_demo_data(db) -> None:
     Seed all demo/presentation data.  Fully idempotent -- every entity is
     inserted only when it does not already exist, identified by a natural key
     (email, tender_number, legal_name+tender_id, etc.).
+
+    IMPORTANT: Each step runs independently.  The function does NOT return
+    early if the demo user already exists -- it checks each data category
+    separately so a partial seed from a previous run is always completed.
     """
     from app.models import (
         User, Tender, Requirement, Bidder, Document,
@@ -37,18 +46,14 @@ def seed_demo_data(db) -> None:
     from app.auth import get_password_hash, create_audit_log
     from app.rules_engine import evaluate_bidder_compliance
 
-    # ------------------------------------------------------------------ #
-    # Guard:  abort immediately if the primary demo user already exists    #
-    # ------------------------------------------------------------------ #
-    if db.query(User).filter(User.email == DEMO_USER_EMAIL).first():
-        logger.info("[Seeder] Demo user already exists -- skipping seed.")
-        return
-
-    logger.info("[Seeder] Demo user not found -- seeding demo data...")
+    print("[Seeder] Starting idempotent demo-data seed check...")
+    logger.info("[Seeder] Starting idempotent demo-data seed check...")
 
     # ------------------------------------------------------------------ #
     # 1. Users                                                             #
     # ------------------------------------------------------------------ #
+    print("[Seeder] Checking demo users...")
+
     def _get_or_create_user(email, full_name, role):
         user = db.query(User).filter(User.email == email).first()
         if not user:
@@ -61,7 +66,10 @@ def seed_demo_data(db) -> None:
             )
             db.add(user)
             db.flush()
+            print(f"[Seeder]   Created user: {email}")
             logger.info(f"[Seeder] Created user: {email}")
+        else:
+            print(f"[Seeder]   User already exists, skipping: {email}")
         return user
 
     admin_user    = _get_or_create_user("admin@codeveil.gov.in",  "System Administrator (CPCL)",                  "Admin")
@@ -70,15 +78,20 @@ def seed_demo_data(db) -> None:
     _get_or_create_user(                "auditor@cag.gov.in",    "Priya Nair (CAG Lead Auditor)",                 "Viewer/Auditor")
     db.commit()
 
-    create_audit_log(
-        db, admin_user.id, admin_user.email,
-        "SYSTEM_INIT", "System", "0",
-        "Demo data seeded on startup -- default accounts created",
-    )
+    # Only log SYSTEM_INIT once (when no audit logs exist for this action)
+    from app.models import AuditLog as _ALog
+    if not db.query(_ALog).filter(_ALog.action_type == "SYSTEM_INIT").first():
+        create_audit_log(
+            db, admin_user.id, admin_user.email,
+            "SYSTEM_INIT", "System", "0",
+            "Demo data seeded on startup -- default accounts created",
+        )
 
     # ------------------------------------------------------------------ #
     # 2. Tenders & Requirements                                            #
     # ------------------------------------------------------------------ #
+    print("[Seeder] Seeding Tenders and Requirements...")
+
     base_dir     = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     domain_dir   = os.path.join(base_dir, "domain data")
     tender_json  = os.path.join(domain_dir, "codeveil_tender_requirements.json")
@@ -112,6 +125,7 @@ def seed_demo_data(db) -> None:
                 db.add(tender)
                 db.commit()
                 db.refresh(tender)
+                print(f"[Seeder]   Created tender: {tender_number} with {len(t_data['requirements'])} requirements")
                 logger.info(f"[Seeder] Created tender: {tender_number}")
                 for req_data in t_data["requirements"]:
                     req = Requirement(
@@ -130,14 +144,18 @@ def seed_demo_data(db) -> None:
                     db.add(req)
                 db.commit()
             else:
+                print(f"[Seeder]   Tender already exists, skipping: {tender_number}")
                 logger.info(f"[Seeder] Tender already exists, skipping: {tender_number}")
             tender_objects[tender_number] = tender
     else:
+        print(f"[Seeder] WARNING: Tender JSON not found at {tender_json}, skipping tenders.")
         logger.warning(f"[Seeder] Tender JSON not found at {tender_json}, skipping tenders.")
 
     # ------------------------------------------------------------------ #
     # 3. Bidders & Documents                                               #
     # ------------------------------------------------------------------ #
+    print("[Seeder] Seeding Bidders and Uploaded Synthetic Documents...")
+
     BID_PRICES = {
         "Suryodaya Safety Systems Pvt Ltd":    4850000.0,
         "Vendhar Fire Solutions":              4920000.0,
@@ -189,12 +207,15 @@ def seed_demo_data(db) -> None:
                     db.add(bidder)
                     db.commit()
                     db.refresh(bidder)
+                    print(f"[Seeder]   Created bidder: {legal_name} ({tender_number})")
                     logger.info(f"[Seeder] Created bidder: {legal_name} ({tender_number})")
                 bidder_map[(tender_number, legal_name)] = bidder
     else:
+        print(f"[Seeder] WARNING: Bidder CSV not found at {bidder_csv}, skipping bidders.")
         logger.warning(f"[Seeder] Bidder CSV not found at {bidder_csv}, skipping bidders.")
 
     if os.path.exists(manifest_csv):
+        docs_created = 0
         with open(manifest_csv, "r", encoding="utf-8") as f:
             for row in csv.DictReader(f):
                 if not row or not row.get("tender_number"):
@@ -227,19 +248,24 @@ def seed_demo_data(db) -> None:
                     extracted_json=json.dumps({"document_type": row["document_type"], "flaw": row.get("flaw_injected")}),
                 )
                 db.add(doc)
+                docs_created += 1
         db.commit()
+        print(f"[Seeder]   Documents seeded: {docs_created} new document records created.")
         logger.info("[Seeder] Documents seeded.")
     else:
+        print(f"[Seeder] WARNING: Manifest CSV not found at {manifest_csv}, skipping documents.")
         logger.warning(f"[Seeder] Manifest CSV not found at {manifest_csv}, skipping documents.")
 
     # ------------------------------------------------------------------ #
     # 4. Compliance Verification (Rules Engine)                            #
     # ------------------------------------------------------------------ #
+    print("[Seeder] Running Rules Engine to Populate Verification Matrix...")
     from app.document_integrity.integrity_service import evaluate_document_integrity
 
+    verified_count = 0
     for bidder in db.query(Bidder).all():
         if db.query(VerificationResult).filter(VerificationResult.bidder_id == bidder.id).first():
-            continue
+            continue  # already verified on a previous run
         tender = db.query(Tender).filter(Tender.id == bidder.tender_id).first()
         reqs   = db.query(Requirement).filter(Requirement.tender_id == tender.id).all()
         docs   = db.query(Document).filter(Document.bidder_id == bidder.id).all()
@@ -271,15 +297,19 @@ def seed_demo_data(db) -> None:
         bidder.compliance_score = score
         bidder.risk_level       = risk
         db.commit()
+        verified_count += 1
+        print(f"[Seeder]   Verified: {bidder.legal_name} — Score={score}%, Risk={risk}")
         create_audit_log(
             db, officer_user.id, officer_user.email,
             "VERIFICATION_RUN", "Bidder", str(bidder.id),
             f"Rules engine completed: '{bidder.legal_name}' -- Score={score}%, Risk={risk}",
         )
+    print(f"[Seeder]   Rules engine done: {verified_count} bidder(s) newly verified.")
 
     # ------------------------------------------------------------------ #
     # 5. Document Integrity flags                                          #
     # ------------------------------------------------------------------ #
+    print("[Seeder] Evaluating Document Integrity & Seeding Test Tamper Cases...")
     for doc in db.query(Document).all():
         bidder = db.query(Bidder).filter(Bidder.id == doc.bidder_id).first()
         if bidder:
@@ -326,4 +356,5 @@ def seed_demo_data(db) -> None:
                 ]}),
             })
 
+    print("[Seeder] Database seeding completed successfully!")
     logger.info("[Seeder] Demo data seeding complete.")
