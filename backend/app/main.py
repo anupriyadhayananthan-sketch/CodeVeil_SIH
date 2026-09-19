@@ -41,8 +41,13 @@ app = FastAPI(
 # CORS allow-list — reads from CORS_ORIGINS env var (comma-separated) in production,
 # falls back to localhost for local development.
 _cors_env = os.environ.get("CORS_ORIGINS", "")
+
 if _cors_env.strip():
-    origins = [o.strip() for o in _cors_env.split(",") if o.strip()]
+    origins = [
+        origin.strip().rstrip("/")
+        for origin in _cors_env.split(",")
+        if origin.strip()
+    ]
 else:
     origins = [
         "http://localhost:5173",

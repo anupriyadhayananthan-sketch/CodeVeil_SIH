@@ -1,6 +1,8 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { parseApiError } from '../utils/apiError';
 
+const API_BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -30,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('codeveil_token', accessToken);
     setToken(accessToken);
 
-    const meRes = await fetch('/api/auth/me', {
+    const meRes = await fetch(`${API_BASE_URL}/api/auth/me`, {
       headers: { Authorization: `Bearer ${accessToken}` }
     });
     if (meRes.ok) {
@@ -54,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
     if (existingToken) {
       // Validate the stored token; clear it if it has expired (401).
-      fetch('/api/auth/me', {
+      fetch(`${API_BASE_URL}/api/auth/me`, {
         headers: { Authorization: `Bearer ${existingToken}` }
       })
         .then(async (res) => {
@@ -78,7 +80,7 @@ export const AuthProvider = ({ children }) => {
   const _silentDemoLogin = async () => {
     setInitializing(true);
     try {
-      const res = await fetch('/api/auth/demo-session', { method: 'POST' });
+      const res = await fetch(`${API_BASE_URL}/api/auth/demo-session`, { method: 'POST' });
       if (!res.ok) {
         const errBody = await res.json().catch(() => ({}));
         console.error("Silent demo auto-login failed:", errBody);
@@ -118,7 +120,7 @@ export const AuthProvider = ({ children }) => {
       if (captchaToken) formData.append('captcha_token', captchaToken);
       if (captchaId) formData.append('captcha_id', captchaId);
 
-      const res = await fetch('/api/auth/token', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: formData
@@ -159,7 +161,7 @@ export const AuthProvider = ({ children }) => {
   const signup = async (email, password, fullName, role, captchaToken = null, captchaId = null) => {
     setLoading(true);
     try {
-      const res = await fetch('/api/auth/signup', {
+      const res = await fetch(`${API_BASE_URL}/api/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
