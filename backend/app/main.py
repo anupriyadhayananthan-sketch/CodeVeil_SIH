@@ -5,7 +5,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.database import engine, Base, ensure_db_schema_up_to_date
+from app.database import engine, Base, SessionLocal, ensure_db_schema_up_to_date
 from app.routers import (
     auth_router,
     auth_2fa_router,
@@ -63,6 +63,25 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# ---------------------------------------------------------------------------
+# Startup: auto-seed demo data if the database is empty
+# ---------------------------------------------------------------------------
+@app.on_event("startup")
+def auto_seed_on_startup():
+    """Idempotent startup hook — seeds demo users/tenders/bidders only when
+    the primary demo user (officer@cpcl.gov.in) does not yet exist.
+    Safe to run on every restart; returns instantly when data is present."""
+    from app.seeder import seed_demo_data
+    db = SessionLocal()
+    try:
+        seed_demo_data(db)
+    except Exception as exc:
+        # Never crash the server on a seed failure
+        import logging
+        logging.getLogger(__name__).error(f"[Startup Seeder] Seed failed: {exc}", exc_info=True)
+    finally:
+        db.close()
 
 # Generic exception handler to prevent leaking stack traces or internal paths to client
 @app.exception_handler(Exception)
