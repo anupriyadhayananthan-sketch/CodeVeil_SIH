@@ -92,11 +92,16 @@ def seed_demo_data(db) -> None:
     # ------------------------------------------------------------------ #
     print("[Seeder] Seeding Tenders and Requirements...")
 
-    base_dir     = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    domain_dir   = os.path.join(base_dir, "domain data")
-    tender_json  = os.path.join(domain_dir, "codeveil_tender_requirements.json")
-    bidder_csv   = os.path.join(domain_dir, "bidder_archetypes.csv")
-    manifest_csv = os.path.join(domain_dir, "MANIFEST (1).csv")
+    from pathlib import Path
+    # seeder.py lives at  <repo>/backend/app/seeder.py
+    # domain data lives at <repo>/domain data/
+    # .parent x3:  seeder.py → app/ → backend/ → repo root
+    _REPO_ROOT   = Path(__file__).resolve().parent.parent.parent
+    domain_dir   = str(_REPO_ROOT / "domain data")
+    tender_json  = str(_REPO_ROOT / "domain data" / "codeveil_tender_requirements.json")
+    bidder_csv   = str(_REPO_ROOT / "domain data" / "bidder_archetypes.csv")
+    manifest_csv = str(_REPO_ROOT / "domain data" / "MANIFEST (1).csv")
+    print(f"[Seeder] Domain data directory resolved to: {domain_dir}")
 
     tender_objects = {}
 
