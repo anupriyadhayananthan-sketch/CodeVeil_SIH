@@ -49,8 +49,18 @@ CREATE TABLE IF NOT EXISTS public.bidders (
     status VARCHAR(50) DEFAULT 'PENDING',
     compliance_score DOUBLE PRECISION DEFAULT 0.0,
     risk_level VARCHAR(20) DEFAULT 'Low',
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    email VARCHAR(255),
+    email_verified BOOLEAN DEFAULT FALSE,
+    last_report_sent_at TIMESTAMP WITH TIME ZONE,
+    last_report_status VARCHAR(50)
 );
+
+-- Additive migration for existing Supabase deployment
+ALTER TABLE public.bidders ADD COLUMN IF NOT EXISTS email VARCHAR(255);
+ALTER TABLE public.bidders ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT FALSE;
+ALTER TABLE public.bidders ADD COLUMN IF NOT EXISTS last_report_sent_at TIMESTAMP WITH TIME ZONE;
+ALTER TABLE public.bidders ADD COLUMN IF NOT EXISTS last_report_status VARCHAR(50);
 
 CREATE TABLE IF NOT EXISTS public.documents (
     id SERIAL PRIMARY KEY,
@@ -123,6 +133,26 @@ CREATE TABLE IF NOT EXISTS public.token_blacklist (
     expires_at TIMESTAMP WITH TIME ZONE NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS public.document_hashes (
+    id SERIAL PRIMARY KEY,
+    file_hash VARCHAR(64) NOT NULL,
+    first_bidder_id INTEGER NOT NULL REFERENCES public.bidders(id) ON DELETE CASCADE,
+    first_tender_id INTEGER REFERENCES public.tenders(id) ON DELETE SET NULL,
+    document_type VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS public.document_integrity_flags (
+    id SERIAL PRIMARY KEY,
+    document_id INTEGER UNIQUE NOT NULL REFERENCES public.documents(id) ON DELETE CASCADE,
+    bidder_id INTEGER NOT NULL REFERENCES public.bidders(id) ON DELETE CASCADE,
+    tamper_risk VARCHAR(20) DEFAULT 'LOW',
+    metadata_flag BOOLEAN DEFAULT FALSE,
+    duplicate_hash_flag BOOLEAN DEFAULT FALSE,
+    details_json TEXT,
+    checked_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Performance Indexes
 CREATE INDEX IF NOT EXISTS idx_tenders_number ON public.tenders(tender_number);
 CREATE INDEX IF NOT EXISTS idx_bidders_tender ON public.bidders(tender_id);
@@ -130,3 +160,5 @@ CREATE INDEX IF NOT EXISTS idx_requirements_tender ON public.requirements(tender
 CREATE INDEX IF NOT EXISTS idx_documents_bidder ON public.documents(bidder_id);
 CREATE INDEX IF NOT EXISTS idx_verifications_bidder ON public.verification_results(bidder_id);
 CREATE INDEX IF NOT EXISTS idx_audit_logs_actor ON public.audit_logs(actor_id);
+CREATE INDEX IF NOT EXISTS idx_document_hashes_hash ON public.document_hashes(file_hash);
+CREATE INDEX IF NOT EXISTS idx_integrity_flags_doc ON public.document_integrity_flags(document_id);

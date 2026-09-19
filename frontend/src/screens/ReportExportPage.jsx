@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { ComplianceReportExportSection } from '../components/ComplianceReportExportSection';
 import { FileCheck, Printer, ShieldCheck, Download, Award, CheckCircle2 } from 'lucide-react';
 
 export const ReportExportPage = ({ selectedTenderId }) => {
@@ -157,6 +158,47 @@ export const ReportExportPage = ({ selectedTenderId }) => {
             </table>
           </div>
 
+          {/* Document Integrity Notes Section (Populated ONLY if MEDIUM or HIGH tamper risk flags exist) */}
+          {bidderDetail.integrity_flags?.some(f => f.tamper_risk === 'HIGH' || f.tamper_risk === 'MEDIUM') && (
+            <div className="space-y-2.5 p-4 bg-amber-50/80 border border-amber-300 rounded-xl text-xs">
+              <h3 className="text-xs font-black uppercase tracking-wider text-amber-900 flex items-center gap-1.5">
+                Document Integrity Notes (Audit Signal)
+              </h3>
+              <div className="space-y-1.5 font-medium text-amber-950">
+                {bidderDetail.integrity_flags
+                  .filter(f => f.tamper_risk === 'HIGH' || f.tamper_risk === 'MEDIUM')
+                  .map(f => {
+                    const doc = bidderDetail.documents?.find(d => d.id === f.document_id);
+                    let reasonText = "Document anomaly detected during automated integrity scan.";
+                    try {
+                      if (f.details_json) {
+                        const parsed = typeof f.details_json === 'string' ? JSON.parse(f.details_json) : f.details_json;
+                        if (parsed.reasons && parsed.reasons.length > 0) {
+                          reasonText = parsed.reasons.join('; ');
+                        }
+                      }
+                    } catch (e) {}
+
+                    return (
+                      <div key={f.id} className="p-2.5 bg-white/90 rounded-lg border border-amber-200 shadow-2xs space-y-0.5">
+                        <div className="flex items-center gap-2">
+                          <span className={`px-2 py-0.5 text-[9px] font-black rounded uppercase ${
+                            f.tamper_risk === 'HIGH' 
+                              ? 'bg-rose-100 text-rose-900 border border-rose-300' 
+                              : 'bg-amber-100 text-amber-900 border border-amber-300'
+                          }`}>
+                            {f.tamper_risk} RISK
+                          </span>
+                          <strong className="text-slate-900 font-bold">{doc?.document_type || 'Document'}</strong>
+                        </div>
+                        <p className="text-[11px] text-slate-700 pl-1">{reasonText}</p>
+                      </div>
+                    );
+                  })}
+              </div>
+            </div>
+          )}
+
           {/* Officer Decision & Signature Block */}
           <div className="pt-4 border-t-2 border-slate-900 grid grid-cols-2 gap-6 text-xs">
             <div className="space-y-1">
@@ -172,6 +214,14 @@ export const ReportExportPage = ({ selectedTenderId }) => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Compliance Report Export & Notification Card */}
+      {bidderDetail && (
+        <ComplianceReportExportSection
+          bidder={bidderDetail}
+          onRefreshBidder={() => fetchBidderDetail(selectedBidderId)}
+        />
       )}
     </div>
   );

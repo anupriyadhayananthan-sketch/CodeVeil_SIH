@@ -126,26 +126,45 @@ def login_for_access_token(
     if name and name.strip():
         user.full_name = name.strip()
 
-    # Reset failure counter on successful auth
+    # Reset failure counter on successful password auth
     login_tracker.reset_failures(client_ip, email)
 
-    user.last_login = datetime.datetime.utcnow()
-    db.commit()
-
-    access_token = create_access_token(
-        data={"sub": user.email, "user_id": user.id, "role": user.role}
+    # Issue short-lived pre-auth token for 2FA verification step
+    pre_auth_expires = datetime.timedelta(minutes=10)
+    pre_auth_token = create_access_token(
+        data={"sub": user.email, "user_id": user.id, "type": "pre_auth"},
+        expires_delta=pre_auth_expires
     )
+
+    from app.services.auth_2fa_service import is_elevated_role, create_and_send_email_otp
+
+    if is_elevated_role(user.role):
+        fa_type = "TOTP_VERIFY" if user.totp_enabled else "TOTP_SETUP"
+        cooldown = 0
+    else:
+        fa_type = "OTP"
+        # Auto-send email OTP for normal users
+        _, _, cooldown = create_and_send_email_otp(db, user)
 
     create_audit_log(
         db,
         actor_id=user.id,
         actor_email=user.email,
-        action_type="USER_LOGIN",
+        action_type="USER_PASSWORD_AUTH_SUCCESS",
         entity_type="User",
         entity_id=str(user.id),
-        details_json="Successful login"
+        details_json=f"Password validated successfully. Proceeding to 2FA stage ({fa_type})"
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+
+    return {
+        "access_token": None,
+        "token_type": "bearer",
+        "requires_2fa": True,
+        "fa_type": fa_type,
+        "pre_auth_token": pre_auth_token,
+        "email": user.email,
+        "cooldown_seconds": cooldown
+    }
 
 @router.post("/logout")
 def logout(token: str = Depends(oauth2_scheme), current_user: User = Depends(get_current_user), db: Session = Depends(get_db)):
@@ -205,4 +224,50 @@ def forgot_password(data: ForgotPasswordRequest, db: Session = Depends(get_db)):
     return {
         "message": "Password reset token generated successfully (demonstration mode).",
         "demo_reset_token": reset_token
+    }
+
+# ---------------------------------------------------------------------------
+# DEMO / PRESENTATION ONLY — Do NOT ship this endpoint to production.
+# Issues a full access token for the seeded demo user, bypassing 2FA entirely,
+# so the frontend can silently establish a valid session on first load without
+# showing a login form. Remove or gate behind an env-var before going live.
+# ---------------------------------------------------------------------------
+@router.post("/demo-session", response_model=Token)
+def create_demo_session(db: Session = Depends(get_db)):
+    """
+    Issues a full JWT access token for the demo Procurement Officer account
+    without requiring 2FA. Used exclusively for the auto-login flow in the
+    demo/presentation frontend build. NOT suitable for production use.
+    """
+    DEMO_EMAIL = "officer@cpcl.gov.in"
+
+    user = db.query(User).filter(User.email == DEMO_EMAIL).first()
+    if not user or not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
+            detail="Demo user account not found. Please re-seed the database."
+        )
+
+    access_token = create_access_token(
+        data={"sub": user.email, "user_id": user.id, "role": user.role}
+    )
+
+    create_audit_log(
+        db,
+        actor_id=user.id,
+        actor_email=user.email,
+        action_type="DEMO_AUTO_LOGIN",
+        entity_type="User",
+        entity_id=str(user.id),
+        details_json="Silent auto-login via /api/auth/demo-session (demo mode only)"
+    )
+
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "requires_2fa": False,
+        "fa_type": None,
+        "pre_auth_token": None,
+        "email": user.email,
+        "cooldown_seconds": 0
     }

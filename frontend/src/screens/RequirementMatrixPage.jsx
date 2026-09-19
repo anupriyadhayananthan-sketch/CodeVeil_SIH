@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { parseApiError } from '../utils/apiError';
 import { EmptyState } from '../components/EmptyState';
 import { DeadlineCountdown } from '../components/DeadlineCountdown';
+import { TamperRiskBadge } from '../components/TamperRiskBadge';
 import { Table, CheckCircle2, XCircle, AlertTriangle, HelpCircle, Eye, FileText, Lock, RefreshCw, X } from 'lucide-react';
 
 export const RequirementMatrixPage = ({ selectedTenderId }) => {
@@ -222,6 +223,20 @@ export const RequirementMatrixPage = ({ selectedTenderId }) => {
                   const isMismatch = v.status === 'MISMATCH';
                   const isManual = v.status === 'MANUAL_REVIEW';
 
+                  const reqCode = req?.code || '';
+                  const matchingDoc = bidderDetail.documents?.find(d => 
+                    d.document_type === reqCode.replace("REQ-", "") ||
+                    req?.title?.toUpperCase().includes(d.document_type) ||
+                    (reqCode === "REQ-01" && d.document_type === "PAN") ||
+                    (reqCode === "REQ-02" && d.document_type === "GST_CERTIFICATE") ||
+                    (reqCode === "REQ-03" && d.document_type === "UDYAM_CERTIFICATE") ||
+                    (reqCode === "REQ-04" && d.document_type === "BIS_LICENSE") ||
+                    (reqCode === "REQ-05" && d.document_type === "OEM_AUTH_LETTER") ||
+                    (reqCode === "REQ-06" && d.document_type === "EPFO_ESI_CERT") ||
+                    (reqCode === "REQ-07" && d.document_type === "FINANCIAL_STATEMENT")
+                  );
+                  const docFlag = matchingDoc?.integrity_flag || bidderDetail.integrity_flags?.find(f => f.document_id === matchingDoc?.id);
+
                   return (
                     <tr key={v.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
                       <td className="p-3 font-mono font-black text-blue-700 dark:text-blue-400">{req?.code}</td>
@@ -242,6 +257,7 @@ export const RequirementMatrixPage = ({ selectedTenderId }) => {
                           {isManual && <HelpCircle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />}
                           {v.status}
                         </span>
+                        <TamperRiskBadge flag={docFlag} documentType={matchingDoc?.document_type} />
                       </td>
                       <td className="p-3">
                         <span className={`px-2 py-0.5 text-[10px] font-black rounded uppercase ${

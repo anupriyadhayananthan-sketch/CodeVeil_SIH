@@ -4,8 +4,13 @@ from pydantic import BaseModel, EmailStr
 
 # Auth Schemas
 class Token(BaseModel):
-    access_token: str
+    access_token: Optional[str] = None
     token_type: str = "bearer"
+    requires_2fa: bool = False
+    fa_type: Optional[str] = None  # "OTP", "TOTP_SETUP", "TOTP_VERIFY"
+    pre_auth_token: Optional[str] = None
+    email: Optional[str] = None
+    cooldown_seconds: Optional[int] = 0
 
 class TokenData(BaseModel):
     email: Optional[str] = None
@@ -92,6 +97,20 @@ class VerificationResultOut(BaseModel):
     class Config:
         from_attributes = True
 
+# Document Integrity Schema
+class DocumentIntegrityFlagOut(BaseModel):
+    id: int
+    document_id: int
+    bidder_id: int
+    tamper_risk: str # LOW, MEDIUM, HIGH
+    metadata_flag: bool = False
+    duplicate_hash_flag: bool = False
+    details_json: Optional[str] = None
+    checked_at: datetime.datetime
+
+    class Config:
+        from_attributes = True
+
 # Document Schemas
 class DocumentOut(BaseModel):
     id: int
@@ -105,6 +124,7 @@ class DocumentOut(BaseModel):
     uploaded_at: datetime.datetime
     extracted_text: Optional[str] = None
     extracted_json: Optional[str] = None
+    integrity_flag: Optional[DocumentIntegrityFlagOut] = None
 
     class Config:
         from_attributes = True
@@ -141,9 +161,14 @@ class BidderOut(BaseModel):
     compliance_score: float
     risk_level: str
     created_at: datetime.datetime
+    email: Optional[str] = None
+    email_verified: Optional[bool] = False
+    last_report_sent_at: Optional[datetime.datetime] = None
+    last_report_status: Optional[str] = None
     documents: List[DocumentOut] = []
     verifications: List[VerificationResultOut] = []
     decisions: List[DecisionOut] = []
+    integrity_flags: List[DocumentIntegrityFlagOut] = []
 
     class Config:
         from_attributes = True

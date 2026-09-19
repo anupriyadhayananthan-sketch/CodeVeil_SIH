@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { parseApiError } from '../utils/apiError';
 import { EmptyState } from '../components/EmptyState';
+import { ComplianceReportExportSection } from '../components/ComplianceReportExportSection';
 import { CheckSquare, CheckCircle, XCircle, HelpCircle, AlertCircle, Send, FileText } from 'lucide-react';
 
 export const OfficerDecisionPage = ({ selectedTenderId }) => {
@@ -245,6 +246,12 @@ export const OfficerDecisionPage = ({ selectedTenderId }) => {
                 <Send className="w-4 h-4" />
               </button>
             </form>
+
+            {/* Compliance Report Export & Notification Section */}
+            <ComplianceReportExportSection
+              bidder={selectedBidder}
+              onRefreshBidder={() => fetchBidders(activeTenderId)}
+            />
           </div>
         )}
       </div>

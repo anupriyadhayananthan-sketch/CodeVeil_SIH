@@ -15,6 +15,14 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
     last_login = Column(DateTime, nullable=True)
 
+    # 2FA Authentication Fields (Email OTP & TOTP)
+    totp_secret = Column(String(500), nullable=True)
+    totp_enabled = Column(Boolean, default=False)
+    otp_hash = Column(String(255), nullable=True)
+    otp_expiry = Column(DateTime, nullable=True)
+    otp_attempts = Column(Integer, default=0)
+    otp_last_sent = Column(DateTime, nullable=True)
+
 class Tender(Base):
     __tablename__ = "tenders"
 
@@ -63,6 +71,12 @@ class Bidder(Base):
     compliance_score = Column(Float, default=0.0)
     risk_level = Column(String(20), default="Low") # Low, Medium, High
     created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    # Compliance Report Email Notification Fields
+    email = Column(String(255), nullable=True)
+    email_verified = Column(Boolean, default=False)
+    last_report_sent_at = Column(DateTime, nullable=True)
+    last_report_status = Column(String(50), nullable=True) # SENT, FAILED
 
     tender = relationship("Tender", back_populates="bidders")
     documents = relationship("Document", back_populates="bidder", cascade="all, delete-orphan")
@@ -153,4 +167,28 @@ class TokenBlacklist(Base):
     user_id = Column(Integer, nullable=False)
     blacklisted_at = Column(DateTime, default=datetime.datetime.utcnow)
     expires_at = Column(DateTime, nullable=False)
+
+class DocumentHashRegistry(Base):
+    __tablename__ = "document_hashes"
+
+    id = Column(Integer, primary_key=True, index=True)
+    file_hash = Column(String(64), index=True, nullable=False)
+    first_bidder_id = Column(Integer, ForeignKey("bidders.id"), nullable=False)
+    first_tender_id = Column(Integer, ForeignKey("tenders.id"), nullable=True)
+    document_type = Column(String(100), nullable=False)
+    created_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+class DocumentIntegrityFlag(Base):
+    __tablename__ = "document_integrity_flags"
+
+    id = Column(Integer, primary_key=True, index=True)
+    document_id = Column(Integer, ForeignKey("documents.id"), unique=True, index=True, nullable=False)
+    bidder_id = Column(Integer, ForeignKey("bidders.id"), nullable=False)
+    tamper_risk = Column(String(20), nullable=False, default="LOW") # LOW, MEDIUM, HIGH
+    metadata_flag = Column(Boolean, default=False)
+    duplicate_hash_flag = Column(Boolean, default=False)
+    details_json = Column(Text, nullable=True) # JSON payload containing human-readable reason
+    checked_at = Column(DateTime, default=datetime.datetime.utcnow)
+
+    document = relationship("Document")
 

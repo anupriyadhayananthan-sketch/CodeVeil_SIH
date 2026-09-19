@@ -19,11 +19,20 @@ router = APIRouter(prefix="/api/bidders", tags=["Bidders"])
 def get_bidders_by_tender(tender_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     return db.query(Bidder).filter(Bidder.tender_id == tender_id).order_by(Bidder.id.asc()).all()
 
-@router.get("/{bidder_id}", response_model=List[BidderOut] if False else BidderOut)
+@router.get("/{bidder_id}", response_model=BidderOut)
 def get_bidder_detail(bidder_id: int, db: Session = Depends(get_db), current_user: User = Depends(get_current_user)):
     bidder = db.query(Bidder).filter(Bidder.id == bidder_id).first()
     if not bidder:
         raise HTTPException(status_code=404, detail="Bidder not found.")
+
+    from app.models import DocumentIntegrityFlag
+    flags = db.query(DocumentIntegrityFlag).filter(DocumentIntegrityFlag.bidder_id == bidder_id).all()
+    flag_map = {f.document_id: f for f in flags}
+
+    for doc in bidder.documents:
+        doc.integrity_flag = flag_map.get(doc.id)
+
+    bidder.integrity_flags = flags
     return bidder
 
 @router.post("/upload")
@@ -128,6 +137,16 @@ def upload_bidder_package(
             extracted_json=json.dumps(fields)
         )
         db.add(doc)
+        db.commit()
+        db.refresh(doc)
+
+        # Run parallel document integrity check (metadata & hash duplicate check)
+        try:
+            from app.document_integrity.integrity_service import evaluate_document_integrity
+            evaluate_document_integrity(db, doc.id, new_bidder.id, tender.id, doc_type, saved_path)
+        except Exception as e:
+            print(f"[Document Integrity Error] Upload check failed: {e}")
+
         doc_objs.append({
             "id": doc.id,
             "document_type": doc_type,
@@ -283,6 +302,14 @@ def record_officer_decision(data: DecisionCreate, db: Session = Depends(get_db),
         details_json=f"Officer recorded decision '{data.decision}' for '{bidder.legal_name}'. Comments: {data.comments}"
     )
 
+    # Trigger automated compliance report email dispatch if decision is QUALIFIED or REJECTED
+    if data.decision in ["QUALIFIED", "REJECTED"]:
+        try:
+            from app.notifications.compliance_email_service import send_compliance_report_email
+            send_compliance_report_email(db, bidder.id, data.decision, data.comments)
+        except Exception as err:
+            print(f"[Compliance Email Error] Exception triggering email report dispatch: {err}")
+
     return DecisionOut(
         id=new_decision.id,
         bidder_id=new_decision.bidder_id,
@@ -292,3 +319,14 @@ def record_officer_decision(data: DecisionCreate, db: Session = Depends(get_db),
         timestamp=new_decision.timestamp,
         officer_name=current_user.full_name
     )
+
+@router.post("/{bidder_id}/resend-report")
+def resend_bidder_report(
+    bidder_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_officer_or_admin)
+):
+    """Manual resend of compliance report email from the officer dashboard."""
+    from app.notifications.compliance_email_service import resend_compliance_report_email
+    ok, msg = resend_compliance_report_email(db, bidder_id, current_user.email)
+    return {"message": msg, "success": ok}

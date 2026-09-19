@@ -2,10 +2,10 @@ import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
 import { CodeVeilLogo } from './CodeVeilLogo';
-import { LogOut, Sun, Moon, Lock, Building, FileText } from 'lucide-react';
+import { Sun, Moon, Lock, Building, FileText } from 'lucide-react';
 
 export const Header = ({ currentTab, setCurrentTab }) => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const { theme, toggleTheme, isDark } = useTheme();
 
   return (
@@ -80,7 +80,7 @@ export const Header = ({ currentTab, setCurrentTab }) => {
 
           {user ? (
             <div className="flex items-center gap-3">
-              <button 
+              <button
                 onClick={() => setCurrentTab('profile')}
                 className="flex items-center gap-2.5 px-3.5 py-1.5 rounded-xl transition-colors border text-left bg-slate-50 border-slate-200 hover:bg-slate-100 dark:bg-slate-800 dark:border-slate-700 dark:hover:bg-slate-700"
               >
@@ -92,23 +92,10 @@ export const Header = ({ currentTab, setCurrentTab }) => {
                   <p className="text-[11px] font-bold text-blue-800 dark:text-blue-400">{user.role}</p>
                 </div>
               </button>
-
-              <button
-                onClick={logout}
-                title="Logout"
-                className="p-2.5 text-slate-500 hover:text-rose-600 hover:bg-rose-50 rounded-xl border border-slate-200 dark:border-slate-700 dark:text-slate-400 dark:hover:text-rose-400 dark:hover:bg-rose-950/30 transition-all"
-              >
-                <LogOut className="w-4 h-4" />
-              </button>
+              {/* Sign-out button intentionally hidden — no login page exists in this demo build.
+                  The auto-login flow re-establishes a session automatically on next load. */}
             </div>
-          ) : (
-            <button
-              onClick={() => setCurrentTab('login')}
-              className="px-4 py-2 text-xs font-black bg-blue-700 hover:bg-blue-800 text-white rounded-xl shadow-xs transition-colors"
-            >
-              Sign In
-            </button>
-          )}
+          ) : null}
         </div>
       </div>
     </header>

@@ -94,11 +94,10 @@ export const RiskCollusionPage = () => {
               <BarChart2 className="w-5 h-5 text-blue-600 dark:text-blue-400" />
               Bid-Price Variance & Cover-Bidding Screen (CoV / Skewness)
             </h2>
-            <span className={`px-3 py-1 text-xs font-black rounded-full border ${
-              priceRigging.rigging_risk_flag 
-                ? 'bg-rose-100 text-rose-900 border-rose-300 dark:bg-rose-950 dark:text-rose-200 dark:border-rose-800' 
+            <span className={`px-3 py-1 text-xs font-black rounded-full border ${priceRigging.rigging_risk_flag
+                ? 'bg-rose-100 text-rose-900 border-rose-300 dark:bg-rose-950 dark:text-rose-200 dark:border-rose-800'
                 : 'bg-emerald-100 text-emerald-900 border-emerald-300 dark:bg-emerald-950 dark:text-emerald-200 dark:border-emerald-800'
-            }`}>
+              }`}>
               {priceRigging.rigging_risk_flag ? 'COLLUSION RISK FLAG DETECTED' : 'NORMAL VARIANCE'}
             </span>
           </div>
@@ -135,82 +134,10 @@ export const RiskCollusionPage = () => {
         </div>
       )}
 
-      {/* Screen 2 & 3: NetworkX Shell Company Graph & ML Classifier Metrics */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* NetworkX Shell Graph Visualization */}
-        {networkGraph && (
-          <div className="p-6 rounded-2xl border bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-sm space-y-4">
-            <h2 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
-              <Network className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              NetworkX Graph: Shell Company & Shared Attribute Clusters
-            </h2>
 
-            <p className="text-xs text-slate-600 dark:text-slate-400 font-semibold">
-              Community detection identifies bidders linked by shared directors, addresses, phone numbers, or bank accounts.
-            </p>
 
-            <div className="space-y-3">
-              {networkGraph.clusters?.map((c, idx) => (
-                <div key={idx} className="p-4 bg-slate-50 border border-rose-200 dark:bg-slate-950 dark:border-rose-900/40 rounded-xl space-y-2 text-xs">
-                  <div className="flex items-center justify-between">
-                    <span className="font-extrabold text-rose-900 dark:text-rose-300">Collusion Cluster #{c.cluster_id}</span>
-                    <span className="px-2.5 py-0.5 text-[10px] font-black bg-rose-100 text-rose-900 border border-rose-300 dark:bg-rose-950 dark:text-rose-200 rounded">
-                      {c.collusion_risk} RISK
-                    </span>
-                  </div>
-                  <p className="text-slate-900 dark:text-slate-200 font-bold">Bidders involved: {c.bidders.join(', ')}</p>
-                  <p className="text-slate-600 dark:text-slate-400 font-medium">{c.reason}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
 
-        {/* Scikit-Learn ML Risk Classifier Metrics */}
-        {mlMetrics && (
-          <div className="p-6 rounded-2xl border bg-white border-slate-200 dark:bg-slate-900 dark:border-slate-800 shadow-sm space-y-4">
-            <h2 className="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
-              <Cpu className="w-5 h-5 text-blue-600 dark:text-blue-400" />
-              ML Risk Classifier Precision & Recall Metrics
-            </h2>
 
-            <p className="text-xs text-slate-600 dark:text-slate-400 font-semibold">
-              Trained scikit-learn model predicting bidder risk probability with real precision/recall evaluation.
-            </p>
-
-            <div className="grid grid-cols-2 gap-3 text-xs">
-              <div className="p-3.5 bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 rounded-xl">
-                <span className="text-slate-500 dark:text-slate-400 font-bold">Accuracy Score:</span>
-                <p className="text-2xl font-black text-slate-900 dark:text-white">{(mlMetrics.accuracy * 100).toFixed(1)}%</p>
-              </div>
-              <div className="p-3.5 bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 rounded-xl">
-                <span className="text-slate-500 dark:text-slate-400 font-bold">Precision Score:</span>
-                <p className="text-2xl font-black text-emerald-700 dark:text-emerald-400">{(mlMetrics.precision * 100).toFixed(1)}%</p>
-              </div>
-              <div className="p-3.5 bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 rounded-xl">
-                <span className="text-slate-500 dark:text-slate-400 font-bold">Recall Score:</span>
-                <p className="text-2xl font-black text-blue-700 dark:text-blue-400">{(mlMetrics.recall * 100).toFixed(1)}%</p>
-              </div>
-              <div className="p-3.5 bg-slate-50 border border-slate-200 dark:bg-slate-950 dark:border-slate-800 rounded-xl">
-                <span className="text-slate-500 dark:text-slate-400 font-bold">F1 Score Metric:</span>
-                <p className="text-2xl font-black text-indigo-700 dark:text-indigo-400">{(mlMetrics.f1_score * 100).toFixed(1)}%</p>
-              </div>
-            </div>
-
-            <div className="space-y-2 pt-2">
-              <span className="text-xs font-black text-slate-900 dark:text-slate-200 uppercase tracking-wider">Feature Importance Weights:</span>
-              <div className="space-y-1.5 text-xs">
-                {Object.entries(mlMetrics.feature_importance || {}).map(([feat, imp], idx) => (
-                  <div key={idx} className="flex items-center justify-between text-slate-700 dark:text-slate-300 font-medium">
-                    <span>{feat}</span>
-                    <span className="font-mono font-bold text-blue-800 dark:text-blue-300">{(imp * 100).toFixed(1)}%</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
     </div>
   );
 };

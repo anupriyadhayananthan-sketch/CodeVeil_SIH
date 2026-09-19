@@ -8,6 +8,13 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem('codeveil_user') || 'null'));
   const [loading, setLoading] = useState(false);
 
+  // True while the silent auto-login is in progress on first load.
+  // Start as `true` when there is no existing token so the dashboard never
+  // renders (and fires API calls) before the auto-login has completed.
+  const [initializing, setInitializing] = useState(
+    !localStorage.getItem('codeveil_token')
+  );
+
   const logout = () => {
     localStorage.removeItem('codeveil_token');
     localStorage.removeItem('codeveil_user');
@@ -15,23 +22,91 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
-  // Verify stored token validity on mount
+  /**
+   * Internal helper: store a JWT and fetch the matching /me profile, reusing
+   * exactly the same localStorage keys and state shape as the real login flow.
+   */
+  const _applyToken = async (accessToken) => {
+    localStorage.setItem('codeveil_token', accessToken);
+    setToken(accessToken);
+
+    const meRes = await fetch('/api/auth/me', {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+    if (meRes.ok) {
+      const userData = await meRes.json();
+      setUser(userData);
+      localStorage.setItem('codeveil_user', JSON.stringify(userData));
+    }
+  };
+
+  // On initial mount: if there is no valid session token in storage,
+  // silently call the demo-session endpoint to obtain a real JWT so every
+  // protected API endpoint keeps working without ever showing a login form.
+  //
+  // ⚠️  DEMO / PRESENTATION ONLY — this auto-login bypasses 2FA using a
+  //     backend endpoint (/api/auth/demo-session) that issues a token for
+  //     the seeded demo account (officer@cpcl.gov.in / Password123! — from seed.py).
+  //     Remove this block (and the backend endpoint) before deploying with
+  //     real user data or in any production environment.
   useEffect(() => {
-    if (token) {
+    const existingToken = localStorage.getItem('codeveil_token');
+
+    if (existingToken) {
+      // Validate the stored token; clear it if it has expired (401).
       fetch('/api/auth/me', {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${existingToken}` }
       })
-        .then(res => {
+        .then(async (res) => {
           if (res.status === 401) {
-            console.warn("Stored JWT token is invalid or expired (401). Clearing session.");
+            console.warn("Stored JWT token is invalid or expired (401). Refreshing demo session.");
             logout();
+            // Fall through to silent re-login below by re-triggering the effect.
+            // Simplest: recurse by removing token and calling the endpoint now.
+            await _silentDemoLogin();
           }
         })
         .catch(err => {
           console.error("Token verification network error:", err);
         });
+    } else {
+      // No stored token — perform silent demo auto-login immediately.
+      _silentDemoLogin();
     }
   }, []);
+
+  const _silentDemoLogin = async () => {
+    setInitializing(true);
+    try {
+      const res = await fetch('/api/auth/demo-session', { method: 'POST' });
+      if (!res.ok) {
+        const errBody = await res.json().catch(() => ({}));
+        console.error("Silent demo auto-login failed:", errBody);
+        return;
+      }
+      const data = await res.json();
+      if (data.access_token) {
+        await _applyToken(data.access_token);
+      }
+    } catch (err) {
+      console.error("Silent demo auto-login network error:", err);
+    } finally {
+      setInitializing(false);
+    }
+  };
+
+  const complete2FA = async (accessToken) => {
+    setLoading(true);
+    try {
+      await _applyToken(accessToken);
+      return true;
+    } catch (err) {
+      console.error("2FA completion user fetch error:", err);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const login = async (email, password, name = null, captchaToken = null, captchaId = null) => {
     setLoading(true);
@@ -56,20 +131,23 @@ export const AuthProvider = ({ children }) => {
       }
 
       const data = await res.json();
-      const accessToken = data.access_token;
-      localStorage.setItem('codeveil_token', accessToken);
-      setToken(accessToken);
 
-      // Fetch user profile
-      const meRes = await fetch('/api/auth/me', {
-        headers: { Authorization: `Bearer ${accessToken}` }
-      });
-      if (meRes.ok) {
-        const userData = await meRes.json();
-        setUser(userData);
-        localStorage.setItem('codeveil_user', JSON.stringify(userData));
+      if (data.requires_2fa) {
+        return {
+          requires_2fa: true,
+          fa_type: data.fa_type,
+          pre_auth_token: data.pre_auth_token,
+          email: data.email || email,
+          cooldown_seconds: data.cooldown_seconds || 0
+        };
       }
-      return true;
+
+      if (data.access_token) {
+        await complete2FA(data.access_token);
+        return { requires_2fa: false, success: true };
+      }
+
+      throw new Error("Invalid authentication response format.");
     } catch (err) {
       console.error("Login submission error:", err);
       throw err;
@@ -108,10 +186,11 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ token, user, setUser, login, signup, logout, loading }}>
+    <AuthContext.Provider value={{ token, user, setUser, login, complete2FA, signup, logout, loading, initializing }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
 export const useAuth = () => useContext(AuthContext);
+

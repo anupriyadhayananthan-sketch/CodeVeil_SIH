@@ -249,6 +249,53 @@ def seed_database():
             str(bidder.id),
             f"Rules engine completed verification for bidder '{bidder.legal_name}': Compliance Score = {score}%, Risk = {risk}"
         )
+    print("Evaluating Document Integrity & Seeding Test Tamper Cases...")
+    from app.models import DocumentIntegrityFlag, DocumentHashRegistry
+    from app.document_integrity.integrity_service import evaluate_document_integrity
+
+    # Evaluate all documents normally
+    all_docs = db.query(Document).all()
+    for doc in all_docs:
+        bidder = db.query(Bidder).filter(Bidder.id == doc.bidder_id).first()
+        if bidder:
+            evaluate_document_integrity(
+                db, doc.id, bidder.id, bidder.tender_id, doc.document_type, doc.file_path
+            )
+
+    # Inject the 2 designated demo tamper test cases:
+    # 1. Bidder ID 2 (Vendhar Fire Solutions) - PAN document -> HIGH Risk (Duplicate Hash)
+    b2_pan_doc = db.query(Document).filter(Document.bidder_id == 2, Document.document_type == "PAN").first()
+    if b2_pan_doc:
+        b1 = db.query(Bidder).filter(Bidder.id == 1).first()
+        b1_name = b1.legal_name if b1 else "Suryodaya Safety Systems Pvt Ltd"
+        flag = db.query(DocumentIntegrityFlag).filter(DocumentIntegrityFlag.document_id == b2_pan_doc.id).first()
+        if not flag:
+            flag = DocumentIntegrityFlag(document_id=b2_pan_doc.id, bidder_id=2)
+            db.add(flag)
+        flag.tamper_risk = "HIGH"
+        flag.duplicate_hash_flag = True
+        flag.details_json = json.dumps({
+            "reasons": [
+                f"Duplicate Hash Detection: Identical file hash (sha256: 8f3a9e12b7...) previously submitted by Bidder ID 1 ({b1_name})."
+            ]
+        })
+        db.commit()
+
+    # 2. Bidder ID 3 (Kaveri PPE Traders) - PAN document -> MEDIUM Risk (Metadata Editing Signature)
+    b3_pan_doc = db.query(Document).filter(Document.bidder_id == 3, Document.document_type == "PAN").first()
+    if b3_pan_doc:
+        flag = db.query(DocumentIntegrityFlag).filter(DocumentIntegrityFlag.document_id == b3_pan_doc.id).first()
+        if not flag:
+            flag = DocumentIntegrityFlag(document_id=b3_pan_doc.id, bidder_id=3)
+            db.add(flag)
+        flag.tamper_risk = "MEDIUM"
+        flag.metadata_flag = True
+        flag.details_json = json.dumps({
+            "reasons": [
+                "Metadata Inspection: Editing software signature ('Adobe Photoshop CS6 (Windows)') detected in PDF Producer metadata for government certificate."
+            ]
+        })
+        db.commit()
 
     print("Database seeding completed successfully!")
 

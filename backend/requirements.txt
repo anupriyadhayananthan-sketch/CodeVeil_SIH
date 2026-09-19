@@ -12,3 +12,7 @@ pypdf>=3.0.0
 pdfplumber>=0.9.0
 jinja2>=3.1.2
 email-validator
+pyotp>=2.8.0
+qrcode>=7.4.2
+cryptography>=41.0.0
+pillow>=9.0.0

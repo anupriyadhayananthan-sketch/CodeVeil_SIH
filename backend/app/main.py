@@ -5,9 +5,10 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from app.database import engine, Base
+from app.database import engine, Base, ensure_db_schema_up_to_date
 from app.routers import (
     auth_router,
+    auth_2fa_router,
     users_router,
     tenders_router,
     bidders_router,
@@ -19,8 +20,14 @@ from app.routers import (
 
 from app.captcha import log_captcha_startup_status
 
-# Initialize database tables
+from app.services.auth_2fa_service import _load_env_file
+
+# Load .env variables from workspace root
+_load_env_file()
+
+# Initialize database tables and ensure 2FA schema columns exist
 Base.metadata.create_all(bind=engine)
+ensure_db_schema_up_to_date()
 
 # Log CAPTCHA Provider configuration on startup
 log_captcha_startup_status()
@@ -63,6 +70,7 @@ async def generic_exception_handler(request: Request, exc: Exception):
 
 # Include API Routers
 app.include_router(auth_router.router)
+app.include_router(auth_2fa_router.router)
 app.include_router(users_router.router)
 app.include_router(tenders_router.router)
 app.include_router(bidders_router.router)

@@ -1,27 +1,37 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { CaptchaWidget } from '../components/CaptchaWidget';
+import { EmailOtpModal } from '../components/auth/EmailOtpModal';
+import { TotpSetupModal } from '../components/auth/TotpSetupModal';
+import { TotpVerifyModal } from '../components/auth/TotpVerifyModal';
 import { ShieldCheck, Lock, Mail, User as UserIcon, ArrowRight, AlertCircle, Info } from 'lucide-react';
 import cpclLogo from '../assets/cpcl-logo.png';
 
 export const LoginPage = ({ setCurrentTab }) => {
-  const { login } = useAuth();
+  const { login, complete2FA } = useAuth();
   const [name, setName] = useState('Rajesh Sharma');
   const [email, setEmail] = useState('officer@cpcl.gov.in');
   const [password, setPassword] = useState('Password123!');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  // 2FA pending state
+  const [pending2FA, setPending2FA] = useState(null);
+
   const [captchaToken, setCaptchaToken] = useState(null);
   const [captchaId, setCaptchaId] = useState(null);
-  const [captchaRequired, setCaptchaRequired] = useState(false);
+  const [captchaRequired, setCaptchaRequired] = useState(true);
 
   const checkCaptchaStatus = async (emailToCheck) => {
     try {
       const res = await fetch(`/api/auth/captcha-status?email=${encodeURIComponent(emailToCheck || '')}`);
       if (res.ok) {
         const data = await res.json();
-        setCaptchaRequired(data.captcha_required);
+        if (data.provider === 'disabled') {
+          setCaptchaRequired(false);
+        } else {
+          setCaptchaRequired(true);
+        }
       }
     } catch (err) {
       console.error("Error checking captcha status:", err);
@@ -44,13 +54,27 @@ export const LoginPage = ({ setCurrentTab }) => {
 
     setLoading(true);
     try {
-      await login(email, password, trimmedName, captchaToken, captchaId);
-      setCurrentTab('home');
+      const result = await login(email, password, trimmedName, captchaToken, captchaId);
+      if (result && result.requires_2fa) {
+        setPending2FA(result);
+      } else {
+        setCurrentTab('home');
+      }
     } catch (err) {
       setError(err.message || 'Invalid credentials.');
       checkCaptchaStatus(email);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handle2FASuccess = async (accessToken) => {
+    try {
+      await complete2FA(accessToken);
+      setPending2FA(null);
+      setCurrentTab('home');
+    } catch (err) {
+      setError("Failed to complete 2FA login session.");
     }
   };
 
@@ -194,6 +218,35 @@ export const LoginPage = ({ setCurrentTab }) => {
           </button>
         </p>
       </div>
+
+      {/* 2FA Post-Password Security Verification Modals */}
+      {pending2FA && pending2FA.fa_type === 'OTP' && (
+        <EmailOtpModal
+          preAuthToken={pending2FA.pre_auth_token}
+          email={pending2FA.email}
+          initialCooldown={pending2FA.cooldown_seconds}
+          onSuccess={handle2FASuccess}
+          onCancel={() => setPending2FA(null)}
+        />
+      )}
+
+      {pending2FA && pending2FA.fa_type === 'TOTP_SETUP' && (
+        <TotpSetupModal
+          preAuthToken={pending2FA.pre_auth_token}
+          email={pending2FA.email}
+          onSuccess={handle2FASuccess}
+          onCancel={() => setPending2FA(null)}
+        />
+      )}
+
+      {pending2FA && pending2FA.fa_type === 'TOTP_VERIFY' && (
+        <TotpVerifyModal
+          preAuthToken={pending2FA.pre_auth_token}
+          email={pending2FA.email}
+          onSuccess={handle2FASuccess}
+          onCancel={() => setPending2FA(null)}
+        />
+      )}
     </div>
   );
 };
